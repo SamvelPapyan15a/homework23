@@ -4,8 +4,8 @@ const upload = require('../middlewares/upload_homework2');
 const fs = require('fs');
 const users = require('../users.json');
 
-function writeFile(){
-    fs.writeFile('./users.json',JSON.stringify(users),err => {
+function writeFile(data){
+    fs.writeFile('./users.json',JSON.stringify(data),err => {
         if(err){
             return err.message;
         }
@@ -28,7 +28,7 @@ router.route('/').get((req,res)=>{
             name: req.body.name,
             image: req.file.filename
         }
-        writeFile();
+        writeFile(users);
         res.json({
             success:true,
             data:users[req.body.username],
@@ -50,7 +50,7 @@ router.route('/:username').get((req,res)=>{
 }).delete((req,res)=>{
     if(users[req.params.username]){
         delete users[req.params.username];
-        writeFile();
+        writeFile(users);
         res.json({
             message:"user deleted"
         });
